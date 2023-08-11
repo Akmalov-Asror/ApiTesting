@@ -11,27 +11,18 @@ namespace postgress.Controller;
 public class UsersController : ControllerBase
 {
     private readonly IUserRepository _userRepository;
-
-    public UsersController(IUserRepository userRepository)
-    {
-        _userRepository = userRepository;
-    }
+    public UsersController(IUserRepository userRepository) => _userRepository = userRepository;
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> CreateUser(UsersDto usersDto)
-    {
-        var user = await _userRepository.CreateUserAsync(usersDto);
-        return Ok(user);
-    }
+    public async Task<IActionResult> CreateUser(UsersDto usersDto) => Ok(await _userRepository.CreateUserAsync(usersDto));
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<User>))]
-    public async Task<ActionResult> GetAllUsers()
-    {
-        var users = await _userRepository.GetUserAllAsync();
-        return Ok(users ?? new List<User?>());
-    }
+    public async Task<ActionResult> GetAllUsers() => Ok(await _userRepository.GetUserAllAsync() ?? new List<User?>());
+
+    [HttpGet("{Id}")]
+    public async Task<IActionResult> GetUserAsync(Guid Id) => Ok(await _userRepository.GetUserAsync(Id));
 
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -40,9 +31,7 @@ public class UsersController : ControllerBase
     {
         var users = await _userRepository.UpdateUserAsync(email, usersDto);
         if (users is null)
-        {
-            return NotFound("This User is Defined");
-        }
+            return NotFound("This User is not Defined");
         return Ok(users);
     }
 
