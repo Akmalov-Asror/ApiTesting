@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
+using JFA.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using postgress.DTO_s;
 using postgress.Entities;
@@ -7,7 +8,7 @@ using postgress.Interfaces;
 using Task = System.Threading.Tasks.Task;
 
 namespace postgress.Repositories;
-
+[Scoped]
 public class ResultRepository : IResultRepository
 {
     private readonly AppDbContext.AppDbContext _context;
