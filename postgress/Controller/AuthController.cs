@@ -30,6 +30,12 @@ public class AuthController : ControllerBase
     [HttpGet, Authorize]
     public ActionResult<string> GetMyName() => Ok(GetMyId());
 
+    [HttpGet("ListUsers"), Authorize]
+    public async Task<IActionResult> GetAllUsers()
+    {
+        return Ok(await _context.Users.ToListAsync());
+    }
+
     [HttpPost("register")]
     public ActionResult<User> Register(UsersDto request)
     {

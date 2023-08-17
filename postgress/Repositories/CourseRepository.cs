@@ -29,7 +29,14 @@ public class CourseRepository : ICourseRepository
 
     public async Task<Course> CreateCourseAsync(CourseDto courseDto)
     {
-        var course = courseDto.Adapt<Course>();
+        var course = new Course()
+        {
+            Id = new Guid(),
+            Description = courseDto.Description,
+            ImgUrl = courseDto.ImgUrl,
+            Price = courseDto.Price,
+            Title = courseDto.Title
+        };
         await _context.Courses.AddAsync(course);
         await _context.SaveChangesAsync();
         return course;
@@ -45,7 +52,6 @@ public class CourseRepository : ICourseRepository
         findCourse.Description = courseDto.Description;
         findCourse.Price = courseDto.Price;
         findCourse.ImgUrl = courseDto.ImgUrl;
-        findCourse.DescriptionCourseId = courseDto.DescriptionCourseId;
 
         await _context.SaveChangesAsync();
 
