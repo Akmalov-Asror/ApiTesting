@@ -25,9 +25,11 @@ namespace postgress.Migrations
 
             modelBuilder.Entity("postgress.Entities.Choices", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("FirstOption")
                         .HasColumnType("text");

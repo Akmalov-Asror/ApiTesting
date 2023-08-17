@@ -1,21 +1,30 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using postgress.DTO_s;
 using postgress.Entities;
 using postgress.Interfaces;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace postgress.Controller;
 
 [Route("api/[controller]")]
 [ApiController]
+
 public class UsersController : ControllerBase
 {
     private readonly IUserRepository _userRepository;
-    public UsersController(IUserRepository userRepository) => _userRepository = userRepository;
+
+    public UsersController(IUserRepository userRepository)
+    {
+        _userRepository = userRepository;
+    }
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> CreateUser(UsersDto usersDto) => Ok(await _userRepository.CreateUserAsync(usersDto));
+    public async Task<IActionResult> CreateUser(UsersDto usersDto) => Ok(await _userRepository.CreateUserAsync(usersDto));  
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<User>))]

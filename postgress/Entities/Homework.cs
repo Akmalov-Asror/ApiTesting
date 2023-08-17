@@ -13,5 +13,5 @@ public class Homework
     public Guid? TaskId { get; set; }
     [ForeignKey(nameof(TaskId))]
     public Task? Task{ get; set; }
-
+        
 }

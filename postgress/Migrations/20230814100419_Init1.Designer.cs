@@ -13,8 +13,8 @@ using postgress.AppDbContext;
 namespace postgress.Migrations
 {
     [DbContext(typeof(AppDbContext.AppDbContext))]
-    [Migration("20230810130323_Init")]
-    partial class Init
+    [Migration("20230814100419_Init1")]
+    partial class Init1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,36 @@ namespace postgress.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("postgress.Entities.Choices", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FirstOption")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FourthOption")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SecondOption")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("TestId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ThirdOption")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("Choices");
+                });
 
             modelBuilder.Entity("postgress.Entities.Comment", b =>
                 {
@@ -280,9 +310,6 @@ namespace postgress.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<List<string>>("Choices")
-                        .HasColumnType("text[]");
-
                     b.Property<int?>("CorrectAnswerQuestion")
                         .HasColumnType("integer");
 
@@ -312,6 +339,13 @@ namespace postgress.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("postgress.Entities.Choices", b =>
+                {
+                    b.HasOne("postgress.Entities.Test", null)
+                        .WithMany("Choices")
+                        .HasForeignKey("TestId");
                 });
 
             modelBuilder.Entity("postgress.Entities.Comment", b =>
@@ -408,6 +442,11 @@ namespace postgress.Migrations
                     b.Navigation("Comment");
 
                     b.Navigation("Lesson");
+                });
+
+            modelBuilder.Entity("postgress.Entities.Test", b =>
+                {
+                    b.Navigation("Choices");
                 });
 #pragma warning restore 612, 618
         }
