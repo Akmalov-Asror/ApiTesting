@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using JFA.DependencyInjection;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using postgress.DTO_s;
 using postgress.Entities;
@@ -6,7 +7,7 @@ using postgress.Interfaces;
 using Task = System.Threading.Tasks.Task;
 
 namespace postgress.Repositories;
-
+[Scoped]
 public class TeacherRepository : ITeacherRepository
 {
     private readonly AppDbContext.AppDbContext _context;

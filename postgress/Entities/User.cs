@@ -1,4 +1,6 @@
-﻿namespace postgress.Entities;
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace postgress.Entities;
 
 public class User
 {

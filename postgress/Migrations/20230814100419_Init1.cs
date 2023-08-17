@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace postgress.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class Init1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -46,8 +47,7 @@ namespace postgress.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     QuestionText = table.Column<string>(type: "text", nullable: true),
-                    CorrectAnswerQuestion = table.Column<int>(type: "integer", nullable: true),
-                    Choices = table.Column<List<string>>(type: "text[]", nullable: true)
+                    CorrectAnswerQuestion = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -66,6 +66,28 @@ namespace postgress.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Choices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FirstOption = table.Column<string>(type: "text", nullable: true),
+                    SecondOption = table.Column<string>(type: "text", nullable: true),
+                    ThirdOption = table.Column<string>(type: "text", nullable: true),
+                    FourthOption = table.Column<string>(type: "text", nullable: true),
+                    TestId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Choices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Choices_Tests_TestId",
+                        column: x => x.TestId,
+                        principalTable: "Tests",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -239,6 +261,11 @@ namespace postgress.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Choices_TestId",
+                table: "Choices",
+                column: "TestId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Comments_TaskId",
                 table: "Comments",
                 column: "TaskId");
@@ -323,6 +350,9 @@ namespace postgress.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_Courses_DescriptionCourses_DescriptionCourseId",
                 table: "Courses");
+
+            migrationBuilder.DropTable(
+                name: "Choices");
 
             migrationBuilder.DropTable(
                 name: "Contacts");

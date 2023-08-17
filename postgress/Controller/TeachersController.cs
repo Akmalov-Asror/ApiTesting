@@ -23,7 +23,7 @@ public class TeachersController : ControllerBase
             return BadRequest("please check the request again");
         return Ok(await _teacherRepository.CreateTeacherAsync(teacherDto));
     }
-
+   
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Teacher>))]
     public async Task<ActionResult> GetAllTeachers() => Ok(await _teacherRepository.GetTeacherAllAsync() ?? new List<Teacher?>());
