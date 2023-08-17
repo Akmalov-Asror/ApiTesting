@@ -7,7 +7,7 @@ using postgress.Interfaces;
 using Task = System.Threading.Tasks.Task;
 
 namespace postgress.Repositories;
-[Scoped]
+
 public class ContactRepository : IContactRepository
 {
     private readonly AppDbContext.AppDbContext _context;

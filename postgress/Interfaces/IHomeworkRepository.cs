@@ -9,6 +9,6 @@ public interface IHomeworkRepository
 {
     Task<List<Homework?>> GetHomeworkAllAsync();
     Task<Homework> CreateHomeworkAsync(ClaimsPrincipal claims, Guid taskId,HomeworkDto homeworkDto);
-    Task<Homework?> UpdateHomeworkAsync(string name, Guid taskId ,HomeworkDto homeworkDto);
+    Task<Homework?> UpdateHomeworkAsync(ClaimsPrincipal claims, Guid taskId ,HomeworkDto homeworkDto);
     Task DeleteHomeworkAsync(Guid id);
 }

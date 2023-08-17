@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using JFA.DependencyInjection;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using postgress.DTO_s;
@@ -7,7 +8,7 @@ using postgress.Interfaces;
 using Task = System.Threading.Tasks.Task;
 
 namespace postgress.Repositories;
-
+[Scoped]
 public class HomeworkRepository : IHomeworkRepository
 {
     private readonly AppDbContext.AppDbContext _context;
@@ -24,7 +25,15 @@ public class HomeworkRepository : IHomeworkRepository
 
     public async Task<Homework> CreateHomeworkAsync(ClaimsPrincipal claims, Guid taskId,HomeworkDto homeworkDto)
     {
-        var homework = homeworkDto.Adapt<Homework>();
+        var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var homework = new Homework()
+        {
+            Id = new Guid(),
+            ImgUrl = homeworkDto.ImgUrl,
+            Name = homeworkDto.Name,
+            TaskId = taskId,
+            UserId = userId
+        };
 
         await _context.Homework.AddAsync(homework);
         await _context.SaveChangesAsync();
@@ -32,12 +41,13 @@ public class HomeworkRepository : IHomeworkRepository
         return homework;
     }
 
-    public async Task<Homework?> UpdateHomeworkAsync(string name,Guid taskId,HomeworkDto homeworkDto)
+    public async Task<Homework?> UpdateHomeworkAsync(ClaimsPrincipal claims,Guid taskId,HomeworkDto homeworkDto)
     {
-        var findHomework = await _context.Homework.FirstOrDefaultAsync(u => u.Name == name);
+        var userId = Guid.Parse(claims.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var findHomework = await _context.Homework.FirstOrDefaultAsync(u => u.Name == homeworkDto.Name);
 
         if (findHomework == null) return findHomework;
-
+        findHomework.UserId = userId;
         findHomework.Name = homeworkDto.Name;
         findHomework.ImgUrl = homeworkDto.ImgUrl;
         findHomework.TaskId = taskId;

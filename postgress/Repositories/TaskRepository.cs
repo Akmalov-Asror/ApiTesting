@@ -1,11 +1,12 @@
-﻿using Mapster;
+﻿using JFA.DependencyInjection;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using postgress.DTO_s;
 using postgress.Interfaces;
 using Task = postgress.Entities.Task;
 
 namespace postgress.Repositories;
-
+[Scoped]
 public class TaskRepository : ITaskRepository
 {
     private readonly AppDbContext.AppDbContext _context;

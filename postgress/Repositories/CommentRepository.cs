@@ -8,7 +8,7 @@ using postgress.Interfaces;
 using Task = System.Threading.Tasks.Task;
 
 namespace postgress.Repositories;
-[Scoped]
+
 public class CommentRepository : ICommentRepository
 {
     private readonly AppDbContext.AppDbContext _context;
