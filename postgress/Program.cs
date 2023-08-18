@@ -43,9 +43,10 @@ builder.Services.AddSwaggerGen(options =>
     
 });
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
-builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<CourseRepository>();
 builder.Services.AddScoped<IDescriptionCourse, DescriptionCourse>();
 builder.Services.AddScoped<IHomeworkRepository, HomeworkRepository>();
 builder.Services.AddScoped<ILessonRepository, LessonRepository>();
@@ -92,7 +93,6 @@ using (var scope = app.Services.CreateScope())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
