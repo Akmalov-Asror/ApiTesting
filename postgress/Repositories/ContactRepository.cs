@@ -37,9 +37,9 @@ public class ContactRepository : IContactRepository
         return contact;
     }
 
-    public async Task<Contact?> UpdateContactAsync(string fullName, ContactDto contactDto)
+    public async Task<Contact?> UpdateContactAsync( ContactDto contactDto)
     {
-        var findContact = await _context.Contacts.FirstOrDefaultAsync(u => u.Name == fullName);
+        var findContact = await _context.Contacts.FirstOrDefaultAsync(u => u.Name == contactDto.Name);
 
         if (findContact == null) return findContact;
 
