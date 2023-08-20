@@ -11,10 +11,7 @@ public class DescriptionCourse : IDescriptionCourse
 
     public DescriptionCourse(AppDbContext.AppDbContext context) => _context = context;
 
-    public async Task<List<Entities.DescriptionCourse>> GetDescriptionAllAsync()
-    {
-        return await _context.DescriptionCourses.ToListAsync();
-    }
+    public async Task<List<Entities.DescriptionCourse>> GetDescriptionAllAsync() => await _context.DescriptionCourses.ToListAsync();
 
     public async Task<Entities.DescriptionCourse> GetDescriptionByIdAsync(Guid id) => await _context.DescriptionCourses.FirstOrDefaultAsync(i => i.Id == id);
 

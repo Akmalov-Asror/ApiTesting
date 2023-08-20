@@ -2,7 +2,7 @@
 
 namespace postgress.Entities;
 
-public class DescriptionCourse
+public class DescriptionCourse : IEntity
 {
     public Guid Id { get; set; }
     public string? Title { get; set; }

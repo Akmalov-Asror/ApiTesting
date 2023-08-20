@@ -18,6 +18,7 @@ public class GenericService<TEntity, TContext> : IGenericService<TEntity>
 
     public async Task<TEntity> Add(TEntity entity)
     {
+        entity.Id = new Guid();
         _context.Set<TEntity>().Add(entity);
         await _context.SaveChangesAsync();
         return entity;
