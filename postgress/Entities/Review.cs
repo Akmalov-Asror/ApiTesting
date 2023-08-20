@@ -2,7 +2,7 @@
 
 namespace postgress.Entities;
 
-public class Review
+public class Review : IEntity
 {
     public Guid Id { get; set; }
     public string? Description { get; set; }

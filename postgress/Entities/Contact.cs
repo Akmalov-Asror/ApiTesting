@@ -1,6 +1,6 @@
 ﻿namespace postgress.Entities;
 
-public class Contact
+public class Contact : IEntity
 {
     public Guid Id { get; set; }
     public string? Name { get; set; }

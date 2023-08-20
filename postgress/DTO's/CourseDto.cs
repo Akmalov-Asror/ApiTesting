@@ -1,6 +1,6 @@
 ﻿namespace postgress.DTO_s;
 
-public class CourseDto
+public class CourseDto 
 {
     public Guid Id { get; set; }
     public string? Title { get; set; }

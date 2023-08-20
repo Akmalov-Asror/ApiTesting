@@ -9,7 +9,7 @@ using postgress.Repositories;
 using System.Text;
 using Swashbuckle.AspNetCore.Filters;
 using Microsoft.Extensions.Options;
-using DescriptionCourse = postgress.Repositories.DescriptionCourse;
+using DescriptionCourseRepository = postgress.Repositories.DescriptionCourseRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -45,15 +45,15 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
-builder.Services.AddScoped<IContactRepository, ContactRepository>();
+builder.Services.AddScoped<ContactRepository>();
 builder.Services.AddScoped<CourseRepository>();
-builder.Services.AddScoped<IDescriptionCourse, DescriptionCourse>();
+builder.Services.AddScoped<DescriptionCourseRepository>();
 builder.Services.AddScoped<IHomeworkRepository, HomeworkRepository>();
-builder.Services.AddScoped<ILessonRepository, LessonRepository>();
+builder.Services.AddScoped< LessonRepository>();
 builder.Services.AddScoped<IResultRepository, ResultRepository>();
-builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
-builder.Services.AddScoped<ITaskRepository, TaskRepository>();
-builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
+builder.Services.AddScoped< ReviewRepository>();
+builder.Services.AddScoped<TaskRepository>();
+builder.Services.AddScoped<TeacherRepository>();
 builder.Services.AddScoped<ITestRepository, TestRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddDbContext<AppDbContext>(options =>

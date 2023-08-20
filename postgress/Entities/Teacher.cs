@@ -1,6 +1,6 @@
 ﻿namespace postgress.Entities;
 
-public class Teacher
+public class Teacher : IEntity
 {
     public Guid Id { get; set; }
     public string? Img { get; set; }
