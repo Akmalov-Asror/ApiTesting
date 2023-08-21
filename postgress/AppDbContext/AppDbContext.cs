@@ -20,5 +20,9 @@ public class AppDbContext : DbContext
     public DbSet<Teacher> Teachers { get; set; }
     public DbSet<Test> Tests { get; set; }
     public DbSet<Choices> Choices { get; set; }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
 
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using postgress.DTO_s;
+using postgress.Encryptors;
 using postgress.Entities;
 using postgress.ExtationFunction;
 using postgress.Interfaces;
@@ -11,13 +12,8 @@ namespace postgress.Repositories;
 public class AuthRepository : IAuthRepository
 {
     private readonly AppDbContext.AppDbContext _context;
-    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AuthRepository(AppDbContext.AppDbContext context, IHttpContextAccessor httpContextAccessor)
-    {
-        _context = context;
-        _httpContextAccessor = httpContextAccessor;
-    }
+    public AuthRepository(AppDbContext.AppDbContext context) => _context = context;
 
     public async Task<User> Register(UsersDto request)
     {
@@ -42,22 +38,18 @@ public class AuthRepository : IAuthRepository
     {
         var user = await _context.Users.FirstOrDefaultAsync(e => e.Email == request.Email);
 
-        if (user == null)
+        if (user != null)
         {
-             throw new BadHttpRequestException("User not found.");
+            var verify = BCrypt.Net.BCrypt.Verify(request.Password, user.Password);
+            if (verify)
+            {
+                var token = CreateTokenInJwtAuthorizationFromUsers.CreateToken(user);
+                return token;
+            }
+            else throw new BadHttpRequestException("Wrong password");
         }
 
-        var verify = BCrypt.Net.BCrypt.Verify(request.Password, user.Password);
-        if (verify)
-        {
-            
-            string token = CreateTokenInJwtAuthorizationFromUsers.CreateToken(user);
-            return token;
-        }
-        else
-        { 
-            throw new BadHttpRequestException("Wrong password");
-        }
+        throw new BadHttpRequestException("User not found.");
     }
 
     public async Task<List<User>> GetAllUsers() => await _context.Users.ToListAsync();
