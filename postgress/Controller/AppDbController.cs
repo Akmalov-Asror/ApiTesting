@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using postgress.Entities;
 using postgress.Services.Generics;
+using postgress.Validators;
 
 namespace postgress.Controller;
 
 [Route("api/[controller]")]
 [ApiController]
+[ValidateModel]
 public abstract class AppDbController<TEntity, TRepository> : ControllerBase
     where TEntity : class, IEntity
     where TRepository : IGenericService<TEntity>

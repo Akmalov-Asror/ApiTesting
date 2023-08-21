@@ -7,9 +7,15 @@ using postgress.Entities;
 using postgress.Interfaces;
 using postgress.Repositories;
 using System.Text;
+using FluentValidation.AspNetCore;
 using Swashbuckle.AspNetCore.Filters;
 using Microsoft.Extensions.Options;
 using DescriptionCourseRepository = postgress.Repositories.DescriptionCourseRepository;
+using FluentValidation;
+using System.Reflection;
+using postgress.Middleware;
+using JFA.DependencyInjection;
+using postgress.Encryptors;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -42,6 +48,13 @@ builder.Services.AddSwaggerGen(options =>
     });
     
 });
+builder.Services.AddSingleton<IEncryptor, AesEncryptor>();
+builder.Services.AddFluentValidationAutoValidation(o =>
+{
+    o.DisableDataAnnotationsValidation = false;
+});
+builder.Services.AddServicesFromAttribute();
+builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
@@ -91,6 +104,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseHttpsRedirection();
+app.UseErrorHandlerMiddleware(); 
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

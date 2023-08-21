@@ -1,21 +1,19 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using postgress.DTO_s;
 using postgress.Entities;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
 using postgress.ExtationFunction;
 using postgress.Interfaces;
-using BCryptNet = BCrypt.Net;
+using postgress.Validators;
 
 namespace postgress.Controller;
 
 [Route("api/[controller]")]
 [ApiController]
+
 public class AuthController : ControllerBase
 {
     private readonly IAuthRepository _authRepository;
@@ -26,7 +24,6 @@ public class AuthController : ControllerBase
 
     [HttpGet("ListUsers"), Authorize]
     public async Task<IActionResult> GetAllUsers() => Ok(await _authRepository.GetAllUsers());
-
     [HttpPost("register")]
     public async Task<ActionResult<User>> Register(UsersDto request) => Ok(await _authRepository.Register(request));
 

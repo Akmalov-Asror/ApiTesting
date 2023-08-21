@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using postgress.DTO_s;
+using postgress.Filters;
 using postgress.Interfaces;
 using postgress.Repositories;
 
@@ -21,10 +22,11 @@ public class CommentController : ControllerBase
     public async Task<IActionResult> GetComments() => Ok(await _commentRepository.GetCommentAllAsync());
 
     [HttpPost]
-    
+    [IdValidation]
     public async Task<IActionResult> WriteCommentAsync(Guid taskId, CommentDto commentDto) => Ok(await _commentRepository.WriteCommentAsync(User, taskId, commentDto));
 
     [HttpPut]
+    [IdValidation]
     public async Task<IActionResult> UpdateCommentAsync(Guid taskId, CommentDto commentDto) => Ok(await _commentRepository.UpdateCommentAsync(User, taskId, commentDto));
 
     [HttpDelete]
